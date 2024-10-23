@@ -21,14 +21,16 @@ modules:
     buildsystem: simple
     sources:
       - type: archive
-        url: https://github.com/swsnr/turnon/archive/refs/tags/v0.4.0.tar.gz
-        sha512: "bfac2d7998fdbfa9b1b94456610d19fde29ee06cfc2ce861c64c387dc2ca4f8b85894cee4d78a9e48a992d75148cea520d5288c03c6747726353928d1da1e406"
+        url: https://github.com/swsnr/turnon/archive/refs/tags/v1.0.0.tar.gz
+        sha512: "225a960dc1d66c7e07353fe4cb9b0bfbbeac418efe7d7b83aa439b8256f765ade8b72da3be9160156e6482df5b587272bbd7feca8fdc0683c38b31c8dc25d736"
       - cargo-sources.json
     build-commands:
       # Point cargo to vendored sources downloaded by flatpak builder
-      - install -Dm0644 -t .cargo/ cargo/config
+      - install -Dm0644 cargo/config .cargo/config.toml
       # Build optimized binary
       - cargo build --frozen --release --verbose
+      # Install locales
+      - make LOCALEDIR=/app/share/locale/ install-locale
       # Install binary, app icon, desktop file, and appstream metadata
       - install -Dm0755 target/release/turnon /app/bin/de.swsnr.turnon
       - install -Dm0644 -t /app/share/icons/hicolor/scalable/apps/ resources/icons/scalable/apps/de.swsnr.turnon.svg
