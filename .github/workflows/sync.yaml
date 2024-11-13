@@ -1,0 +1,31 @@
+name: Sync
+
+on: workflow_dispatch
+
+jobs:
+  sync:
+    name: Sync from swsnr/turnon
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: flathub
+      - uses: actions/checkout@v4
+        with:
+          path: upstream
+          sparse-checkout: |
+            flatpak/
+      - run: cp -t flathub upstream/flatpak/de.swsnr.turnon.yaml upstream/flatpak/cargo-sources.json
+      - uses: peter-evans/create-pull-request@v7
+        with:
+          path: flathub
+          commit-message: "Update from swsnr/turnon"
+          branch: swsnr/turnon/update
+          delete-branch: true
+          base: master
+          sign-commits: true
+          title: Update manifest from swsnr/turnon
+          body: |
+            Manually triggered updated from swsnr/turnon
+          draft: true
+          assignees: swsnr
