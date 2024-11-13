@@ -12,6 +12,7 @@ jobs:
           path: flathub
       - uses: actions/checkout@v4
         with:
+          repository: swsnr/turnon
           path: upstream
           sparse-checkout: |
             flatpak/
@@ -26,6 +27,6 @@ jobs:
           sign-commits: true
           title: Update manifest from swsnr/turnon
           body: |
-            Manually triggered updated from swsnr/turnon
+            Manually triggered update from swsnr/turnon
           draft: true
           assignees: swsnr
