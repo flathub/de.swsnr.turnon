@@ -28,5 +28,4 @@ jobs:
           title: Update manifest from swsnr/turnon
           body: |
             Manually triggered update from swsnr/turnon
-          draft: true
           assignees: swsnr
