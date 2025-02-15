@@ -21,13 +21,22 @@ modules:
     buildsystem: simple
     sources:
       - type: archive
-        url: https://github.com/swsnr/turnon/archive/refs/tags/v2.3.1.tar.gz
-        sha512: "71253dc042f364fc4df2cd8456d11438fc74cff087e4c670f131d8aed4a62224bfeb7ec50e7d5a343d97af9db9f2ca042cbe8fb4a441a0b6c88bf579e7fd90b9"
-      - cargo-sources.json
+        url: https://github.com/swsnr/turnon/releases/download/v2.3.3/turnon-v2.3.3.tar.zst
+        sha512: "d1e3dd024afccb9ccff06fd4ed870182be0458d9d26adbb25a725fb1acfa8a89f777d47ebfde15299196ccf163b89c9c6b2981c1fc365ca2797236091b12d362"
+      - type: archive
+        url: https://github.com/swsnr/turnon/releases/download/v2.3.3/vendor.tar.zst
+        sha512: "778d450d5802ae8476a56e1ae03b78223757dc7456acfa68f87a6603bf5f9356a93362803553bd4cfb60ebd1455e1f8c810f34ba7d33297f4ece469ee1862cdc"
+        dest: vendor/
+      - type: inline
+        dest: .cargo/
+        dest-filename: config.toml
+        contents: |
+          [source.crates-io]
+          replace-with = "vendored-sources"
+
+          [source.vendored-sources]
+          directory = "vendor"
     build-commands:
-      # Point cargo to vendored sources downloaded by flatpak builder
-      - install -Dm0644 cargo/config .cargo/config.toml
       - cargo build --frozen --release --verbose
       - make DESTPREFIX=/app install
-      # Compile settings schemas
       - glib-compile-schemas --strict /app/share/glib-2.0/schemas
