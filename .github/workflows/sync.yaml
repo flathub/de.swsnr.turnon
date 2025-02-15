@@ -16,7 +16,7 @@ jobs:
           path: upstream
           sparse-checkout: |
             flatpak/
-      - run: cp -t flathub upstream/flatpak/de.swsnr.turnon.yaml upstream/flatpak/cargo-sources.json
+      - run: cp -t flathub upstream/flatpak/de.swsnr.turnon.yaml
       - uses: peter-evans/create-pull-request@v7
         with:
           path: flathub
