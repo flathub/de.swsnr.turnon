@@ -8,18 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          path: flathub
-      - uses: actions/checkout@v4
-        with:
-          repository: https://codeberg.org/swsnr/turnon.git
-          path: upstream
-          sparse-checkout: |
-            flatpak/
-      - run: cp -t flathub upstream/flatpak/de.swsnr.turnon.yaml
+      - run: "curl -sSfL https://codeberg.org/swsnr/turnon/raw/branch/main/flatpak/de.swsnr.turnon.yaml > de.swsnr.turnon.yaml"
       - uses: peter-evans/create-pull-request@v7
         with:
-          path: flathub
           commit-message: "Update from swsnr/turnon"
           branch: swsnr/turnon/update
           delete-branch: true
@@ -27,5 +18,7 @@ jobs:
           sign-commits: true
           title: Update manifest from upstream
           body: |
-            Manually triggered update from https://codeberg.org/swsnr/turnon
+            Update flatpak manifest from [swsnr/turnon](https://codeberg.org/swsnr/turnon).
+
+            PR created by [sync workflow](https://github.com/flathub/de.swsnr.turnon/actions/workflows/sync.yaml)
           assignees: swsnr
