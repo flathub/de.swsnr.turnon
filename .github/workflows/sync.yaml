@@ -9,6 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: "curl -sSfL https://codeberg.org/swsnr/turnon/raw/branch/main/flatpak/de.swsnr.turnon.yaml > de.swsnr.turnon.yaml"
+      - run: "curl -sSfL https://codeberg.org/swsnr/turnon/raw/branch/main/flatpak/de.swsnr.turnon.cargo-sources.json > de.swsnr.turnon.cargo-sources.json"
       - uses: peter-evans/create-pull-request@v7
         with:
           commit-message: "Update from swsnr/turnon"
