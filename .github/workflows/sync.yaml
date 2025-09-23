@@ -7,19 +7,30 @@ jobs:
     name: Sync from swsnr/turnon
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - run: "curl -sSfL https://codeberg.org/swsnr/turnon/raw/branch/main/flatpak/de.swsnr.turnon.yaml > de.swsnr.turnon.yaml"
-      - run: "curl -sSfL https://codeberg.org/swsnr/turnon/raw/branch/main/flatpak/de.swsnr.turnon.cargo-sources.json > de.swsnr.turnon.cargo-sources.json"
+      - uses: actions/checkout@v5
+        with:
+          path: flathub
+      - run: "git clone --depth 1 --single-branch --branch main --sparse https://codeberg.org/swsnr/turnon.git"
+      - run: "git -C turnon sparse-checkout add flatpak"
+      - run: "cp -t flathub turnon/flatpak/de.swsnr.turnon.yaml turnon/flatpak/de.swsnr.turnon.cargo-sources.json"
+      - run: 'echo short_ref="$(git -C turnon rev-parse --short=7 HEAD)"'
+        id: revparse_short
+      - run: 'echo commit_hash="$(git -C turnon rev-parse HEAD)" >> "${GITHUB_OUTPUT}"'
+        id: revparse
       - uses: peter-evans/create-pull-request@v7
         with:
-          commit-message: "Update from swsnr/turnon"
+          path: flathub
+          commit-message: |
+            Update from swsnr/turnon@${{steps.revparse_short.outputs.short_ref}}
+
+            Update from https://codeberg.org/swsnr/turnon/commit/${{steps.revparse.outputs.commit_hash}}
           branch: swsnr/turnon/update
           delete-branch: true
           base: master
           sign-commits: true
-          title: Update manifest from upstream
+          title: Update manifest from swsnr/turnon
           body: |
-            Update flatpak manifest from [swsnr/turnon](https://codeberg.org/swsnr/turnon).
+            Update flatpak manifest from [swsnr/turnon@${{steps.revparse_short.outputs.short_ref}}](https://codeberg.org/swsnr/turnon/commit/${{steps.revparse.outputs.commit_hash}}).
 
             PR created by [sync workflow](https://github.com/flathub/de.swsnr.turnon/actions/workflows/sync.yaml)
           assignees: swsnr
