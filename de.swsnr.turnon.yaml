@@ -14,25 +14,6 @@ finish-args:
 build-options:
   append-path: /usr/lib/sdk/rust-stable/bin
 modules:
-  # Install just for our build file
-  - name: just
-    buildsystem: simple
-    sources:
-      - type: archive
-        url: https://github.com/casey/just/releases/download/1.42.4/just-1.42.4-aarch64-unknown-linux-musl.tar.gz
-        sha256: beb35a4ed1208ffbb0fef26042c65875759a5358b9ee1a7856dec8490dfd4aca
-        strip-components: 0
-        only-arches:
-          - aarch64
-      - type: archive
-        url: https://github.com/casey/just/releases/download/1.42.4/just-1.42.4-x86_64-unknown-linux-musl.tar.gz
-        sha256: 678efc1cfbd5fa5a88375daa7e2f3864a049d6d63a0296df925a2ae5f516cb56
-        strip-components: 0
-        only-arches:
-          - x86_64
-    build-commands:
-      - install -D -m755 just /app/bin/just
-    cleanup: ["*"]
   - name: turnon
     buildsystem: simple
     sources:
