@@ -12,8 +12,8 @@ jobs:
           path: flathub
       - run: "git clone --depth 1 --single-branch --branch main --sparse https://codeberg.org/swsnr/turnon.git"
       - run: "git -C turnon sparse-checkout add flatpak"
-      - run: "cp -t flathub turnon/flatpak/de.swsnr.turnon.yaml turnon/flatpak/de.swsnr.turnon.cargo-sources.json"
-      - run: 'echo short_ref="$(git -C turnon rev-parse --short=7 HEAD)"'
+      - run: "cp -t flathub turnon/flatpak/de.swsnr.turnon.yaml turnon/flatpak/pip-build.json"
+      - run: 'echo short_ref="$(git -C turnon rev-parse --short=7 HEAD)" >> "${GITHUB_OUTPUT}"'
         id: revparse_short
       - run: 'echo commit_hash="$(git -C turnon rev-parse HEAD)" >> "${GITHUB_OUTPUT}"'
         id: revparse
