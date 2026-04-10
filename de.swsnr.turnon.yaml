@@ -1,9 +1,7 @@
 id: de.swsnr.turnon
 runtime: org.gnome.Platform
-runtime-version: "49"
+runtime-version: "50"
 sdk: org.gnome.Sdk
-sdk-extensions:
-  - org.freedesktop.Sdk.Extension.rust-stable
 command: de.swsnr.turnon
 finish-args:
   - --share=ipc
@@ -11,38 +9,17 @@ finish-args:
   - --socket=fallback-x11
   - --socket=wayland
   - --device=dri
-build-options:
-  append-path: /usr/lib/sdk/rust-stable/bin
 modules:
-  # Install just for our build file
-  - name: just
-    buildsystem: simple
-    sources:
-      - type: archive
-        url: https://github.com/casey/just/releases/download/1.42.4/just-1.42.4-aarch64-unknown-linux-musl.tar.gz
-        sha256: beb35a4ed1208ffbb0fef26042c65875759a5358b9ee1a7856dec8490dfd4aca
-        strip-components: 0
-        only-arches:
-          - aarch64
-      - type: archive
-        url: https://github.com/casey/just/releases/download/1.42.4/just-1.42.4-x86_64-unknown-linux-musl.tar.gz
-        sha256: 678efc1cfbd5fa5a88375daa7e2f3864a049d6d63a0296df925a2ae5f516cb56
-        strip-components: 0
-        only-arches:
-          - x86_64
-    build-commands:
-      - install -D -m755 just /app/bin/just
-    cleanup: ["*"]
+  - pip-build.json
   - name: turnon
     buildsystem: simple
     sources:
       - type: git
         url: https://codeberg.org/swsnr/turnon.git
-        tag: "v2.9.6"
-        commit: "e96807b6551ebe8a46165496ddd81919b24d1dbe"
-      - de.swsnr.turnon.cargo-sources.json
+        tag: v3.0.1
+        commit: 77eecdeac6f8fc32e1ec87214bacaa6ab03c6d98
     build-commands:
-      - install -Dm644 cargo/config .cargo/config.toml
-      - just APPID=de.swsnr.turnon compile
-      - cargo build --frozen --release --verbose
-      - just APPID=de.swsnr.turnon DESTPREFIX=/app install
+      # Crudely assert that we're not on a -dev version
+      - grep version pyproject.toml | grep -qv -- '[.-]dev'
+      - pip3 install --verbose --exists-action=i --no-index --no-deps --prefix=${FLATPAK_DEST} --no-build-isolation .
+      - glib-compile-schemas /app/share/glib-2.0/schemas
