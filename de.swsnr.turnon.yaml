@@ -38,8 +38,8 @@ modules:
     sources:
       - type: git
         url: https://codeberg.org/swsnr/turnon.git
-        tag: "v3.2.0"
-        commit: "9ed87b159bc8d394fb1685c24e30e05fcc965f5c"
+        tag: "v3.2.1"
+        commit: "dbd8776ef25fc26deeb28f16a5424c248a479484"
       - de.swsnr.turnon.cargo-sources.json
     build-commands:
       - install -Dm644 cargo/config .cargo/config.toml
