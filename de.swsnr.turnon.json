@@ -1,0 +1,39 @@
+{
+    "id": "de.swsnr.turnon",
+    "runtime": "org.kde.Platform",
+    "runtime-version": "6.11",
+    "sdk": "org.kde.Sdk",
+    "command": "turnon",
+    "finish-args": [
+        "--share=ipc",
+        "--share=network",
+        "--socket=fallback-x11",
+        "--socket=wayland",
+        "--device=dri"
+    ],
+    "modules": [
+        {
+            "name": "turnon",
+            "buildsystem": "cmake-ninja",
+            "config-opts": [
+                "-DBUILD_TESTING=OFF",
+                "-DCMAKE_BUILD_TYPE=RelWithDebInfo"
+            ],
+            "builddir": true,
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://codeberg.org/swsnr/turnon.git",
+                    "tag": "v2026.11",
+                    "commit": "f5a5e2fe97d1f38911cd8ce4e872ec5685fa42ef",
+                    "x-checker-data": {
+                        "type": "forgejo",
+                        "instance": "https://codeberg.org",
+                        "repo": "swsnr/turnon",
+                        "tag-pattern": "^v([0-9.]+)$"
+                    }
+                }
+            ]
+        }
+    ]
+}
